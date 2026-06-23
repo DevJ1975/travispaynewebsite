@@ -33,7 +33,7 @@ Click **+ Add**, then choose:
 - **Heading** – big title text
 - **Text** – a paragraph
 - **Button** – a clickable button (you set where it links)
-- **Image** – a picture (paste an image web address)
+- **Image** – a picture (**upload your own** from your computer, or paste a web address)
 - **Box** – a colored rectangle (great for backgrounds/dividers)
 - **Divider** – a thin line
 The item appears on the canvas — now move and style it.
@@ -51,8 +51,12 @@ The item appears on the canvas — now move and style it.
 With an item selected, use the right panel's **Content** section:
 - **Text/Heading/Button:** type your words in the box.
 - **Button:** also set the **Link URL** (where it goes when clicked).
-- **Image:** paste an **Image URL**, and always add **Alt text** (a short description — it
-  helps accessibility and Google).
+- **Image:** click **Upload / choose image** to open the **media library** — drag a picture
+  in (or click **Choose a file**) to upload it from your computer, or click any image you've
+  already uploaded to reuse it. You can also paste an **Image URL** instead. Always add
+  **Alt text** (a short description — it helps accessibility and Google).
+  *(Uploading needs you to be signed in; your developer enables Cloud Storage once — see
+  troubleshooting below.)*
 
 ## 8. Style it (any color, font, size)
 In the right panel:
@@ -107,6 +111,9 @@ You can also tick **"Hidden on Mobile"** (right panel) to hide an item on a spec
   developer to complete the one-time Firebase setup (see `docs/09-firebase-deploy.md`).
 - **Can't sign in:** confirm Email/Password sign-in is enabled and your account exists in
   Firebase; double-check the email/password.
+- **"Could not load your media" / upload fails:** make sure you're **signed in**, and ask your
+  developer to enable **Cloud Storage** and deploy the storage rules (one-time, see
+  `docs/09-firebase-deploy.md`). Images must be under **10 MB**.
 - **My page isn't at the address I expected:** make sure you set the **slug** and clicked
   **Publish**, and that the slug isn't a reserved one (section 10).
 - **I lost changes:** changes autosave to your browser; if you switch devices, sign in so
@@ -123,4 +130,4 @@ You can also tick **"Hidden on Mobile"** (right panel) to hide an item on a spec
 ---
 
 *Questions or a feature you want? Tell your developer — the editor is built to grow
-(coming next: snapping guides, drag-to-rotate, and an image upload library).*
+(coming next: snapping guides, drag-to-rotate, and a templates gallery).*

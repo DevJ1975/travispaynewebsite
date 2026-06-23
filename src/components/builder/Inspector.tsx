@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import { useBuilder } from '@/lib/builder/store';
 import { FONT_OPTIONS } from '@/lib/builder/types';
+import { MediaPicker } from './MediaPicker';
 
 function ColorField({
   label,
@@ -89,6 +90,8 @@ export function Inspector() {
   const bringForward = useBuilder((s) => s.bringForward);
   const sendBackward = useBuilder((s) => s.sendBackward);
 
+  const [mediaOpen, setMediaOpen] = useState(false);
+
   const el = page.elements.find((e) => e.id === selectedId);
 
   if (!el) {
@@ -128,10 +131,17 @@ export function Inspector() {
           )}
           {el.type === 'image' && (
             <>
+              <button
+                type="button"
+                onClick={() => setMediaOpen(true)}
+                className="mb-2 w-full rounded bg-neutral-800 px-2 py-1.5 text-sm font-medium text-white"
+              >
+                Upload / choose image
+              </button>
               <input
                 value={el.props.src ?? ''}
                 onChange={(e) => updateProps(el.id, { src: e.target.value })}
-                placeholder="Image URL"
+                placeholder="…or paste an image URL"
                 className="w-full rounded border border-neutral-300 px-2 py-1 text-sm text-neutral-800"
               />
               <input
@@ -242,6 +252,13 @@ export function Inspector() {
           </button>
         </div>
       </Section>
+
+      {mediaOpen && (
+        <MediaPicker
+          onClose={() => setMediaOpen(false)}
+          onSelect={(url) => updateProps(el.id, { src: url })}
+        />
+      )}
     </aside>
   );
 }

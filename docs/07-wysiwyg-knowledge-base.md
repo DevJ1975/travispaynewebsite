@@ -10,18 +10,18 @@
 layer/rotate-by-number), elements (heading, text, button, image, box, divider), **per-device
 layouts** (desktop/tablet/mobile edited separately), **total-freedom styling** (any color/
 font/size via inspector + color pickers), **undo/redo** (zundo), **autosave**, **preview**,
-**localStorage + cloud draft sync**, **publish** to Firestore, and **public SSR rendering**
-via the catch-all `[...slug]` (Firestore REST → per-device responsive CSS). Auth via Firebase
-client sign-in + editor allowlist.
+**localStorage + cloud draft sync**, a **media library** (Cloud Storage image upload/browse/
+pick), **publish** to Firestore, and **public SSR rendering** via the catch-all `[...slug]`
+(Firestore REST → per-device responsive CSS). Auth via Firebase client sign-in + editor allowlist.
 
 **Also present (now superseded):** an earlier **block-based** builder (Puck) at `/admin/pages`
 — retained but no longer the public render path; slated for removal.
 
 **Gaps vs. mature builders:** snapping/alignment guides, drag-to-rotate handle, multi-select,
-a media/asset **upload library** (today images are by URL), templates/starter gallery,
-synced reusable sections (global header/footer components), in-canvas image crop, scheduled
-publish, version-history **restore UI**, richer elements (gallery/lightbox, video embed, form
-builder, tabs/accordion, map), and animations/scroll interactions.
+templates/starter gallery, synced reusable sections (global header/footer components),
+in-canvas image crop, scheduled publish, version-history **restore UI**, richer elements
+(gallery/lightbox, video embed, form builder, tabs/accordion, map), and animations/scroll
+interactions.
 
 ## 2. The three editor models (where ours sits)
 | Model | Exemplar | How layout works | Trade-off |
@@ -97,7 +97,7 @@ with **autosave + cloud sync** and **per-device editing built in from day one**.
 | Autosave | ✓ | — | ✓ | ✓ | ✓ | **✓** |
 | Version restore | ✓ | — | ✓ | ✓ | ✓ | **◐ (revisions; UI next)** |
 | Global styles/tokens | ✓ | ✓ | ✓ | ✓ | ✓ | **◐ (presets)** |
-| Media upload library | ✓ | ✓ | ✓ | ✓ | ✓ | **— (URL only; next)** |
+| Media upload library | ✓ | ✓ | ✓ | ✓ | ✓ | **✓ (Cloud Storage)** |
 | Templates gallery | ✓ | ✓ | ✓ | ✓ | ✓ | **— (next)** |
 | Reusable/global components | ◐/✓(Studio) | ◐ (copies) | ✓ | ✓ | ✓ | **— (next)** |
 | Per-page SEO | ✓ | ✓ | ✓ | ✓ | ✓ | **◐ (title; expand)** |
@@ -119,15 +119,15 @@ with **autosave + cloud sync** and **per-device editing built in from day one**.
 | Cloud persistence + publish | **Built** | client SDK → `studioPages`/`publishedPages` |
 | Public SSR render | **Built** | Firestore REST → `SiteRenderer` (no service account needed) |
 | Snapping/guides + drag-rotate + multi-select | **Next** | add `react-moveable` + `selecto` (already planned) |
-| Media library (upload) | **Next** | Cloud Storage + Resize Images extension; custom picker |
+| Media library (upload) | **Built** | Cloud Storage (`studio/uploads/**`) via client SDK; `MediaPicker` |
 | Templates & reusable sections | **Next** | seed templates; "save section" → reuse |
 | Version-history restore UI | **Next** | revisions exist; add a restore panel |
 | Animations/interactions | **Later** | Framer Motion presets per element |
 | AI "describe-to-build" | **Optional** | Claude prompt → starter layout JSON |
 
 ## 10. Recommended V1 feature set (MoSCoW)
-- **Must (done):** freeform canvas, per-device, style freedom, undo/redo, autosave, publish, public render.
-- **Should (next):** snapping guides, drag-rotate, media upload library, alt-text/SEO prompts, version-restore UI.
+- **Must (done):** freeform canvas, per-device, style freedom, undo/redo, autosave, publish, public render, media upload library.
+- **Should (next):** snapping guides, drag-rotate, alt-text/SEO prompts, version-restore UI.
 - **Could:** templates gallery, reusable/global sections, animations, scheduled publish, multi-select.
 - **Won't (now):** real-time multiplayer editing, full CSS box-model editor, app marketplace.
 
