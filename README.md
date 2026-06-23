@@ -4,11 +4,11 @@ Rebuild of **travispayne.com** (currently on Duda) as a modern **React / Next.js
 site backed by a **Google (Firebase / Google Cloud)** backend — with a cinematic
 design refresh, a real blog, a store, gated masterclasses, and booking.
 
-> **Status:** **Phase 3 (Store) — complete.** Phases 0–3 are built and the full
-> verification gate (lint · typecheck · test · build) is green: the marketing site,
-> a blog + `/admin` CMS, and a store (catalog, cart, Stripe Checkout with Google Pay,
-> webhook order fulfillment, admin orders). The rebuild **plan** lives in `docs/`;
-> see [`docs/05`](docs/05-plan-review-and-decisions.md) §6 for remaining infra items.
+> **Status:** **Phases 0–4 complete.** All core feature phases are built and the full
+> verification gate (lint · typecheck · test · build) is green: marketing site, blog +
+> `/admin` CMS, store (Stripe Checkout / Google Pay), and masterclasses (gated Mux video,
+> enrollments). Remaining: the Wix/Duda-style **Visual Page Builder** (Phase 2.5,
+> [`docs/06`](docs/06-visual-editor-cms.md)) and live infra wiring. The **plan** lives in `docs/`.
 
 ## 📋 The plan (`docs/`)
 | Doc | Contents |
@@ -67,7 +67,8 @@ firebase.json      # Firestore/Storage rules + emulators
 ```
 
 ## Next step
-Continue with **Phase 4 — Masterclasses** (gated video via Mux, enrollments,
-memberships) per `docs/00-overview-and-roadmap.md`, or stand up the Firebase projects
-and Stripe keys to enable live data/auth/payments and App Hosting preview deploys —
-forms, the blog CMS, admin login, and checkout all activate once configured.
+Build the **Visual Page Builder** (Phase 2.5, [`docs/06`](docs/06-visual-editor-cms.md) —
+a Puck block editor so the owner can edit pages like Wix/Duda), or stand up the Firebase
+projects + Stripe/Mux keys to make data, auth, payments, and gated video live (and enable
+App Hosting preview deploys). Forms, the blog CMS, admin login, checkout, and enrollments
+all activate once configured.
