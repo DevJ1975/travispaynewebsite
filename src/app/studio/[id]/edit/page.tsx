@@ -3,6 +3,8 @@
 import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { loadPage, newPage, persistPage, useBuilder } from '@/lib/builder/store';
+import { getDraftCloud, isAllowed, saveDraftCloud } from '@/lib/builder/firestore';
+import { useStudioAuth } from '@/lib/builder/useStudioAuth';
 import { Toolbar } from '@/components/builder/Toolbar';
 import { FreeformCanvas } from '@/components/builder/FreeformCanvas';
 import { Inspector } from '@/components/builder/Inspector';
@@ -10,6 +12,7 @@ import { Inspector } from '@/components/builder/Inspector';
 export default function StudioEditPage() {
   const params = useParams<{ id: string }>();
   const id = params.id;
+  const user = useStudioAuth();
 
   const setPage = useBuilder((s) => s.setPage);
   const preview = useBuilder((s) => s.preview);
@@ -19,24 +22,44 @@ export default function StudioEditPage() {
   const remove = useBuilder((s) => s.remove);
   const updateGeo = useBuilder((s) => s.updateGeo);
 
-  // Load the page (or create it) on mount.
+  // Load the page: prefer the cloud copy when signed in, else localStorage, else new.
   useEffect(() => {
-    const existing = loadPage(id);
-    if (existing) {
-      setPage(existing);
-    } else {
-      const p = { ...newPage(), id };
-      setPage(p);
-      persistPage(p);
+    let cancelled = false;
+    async function load() {
+      let loaded = loadPage(id);
+      if (user && isAllowed(user.email)) {
+        try {
+          const cloud = await getDraftCloud(id);
+          if (cloud) loaded = cloud;
+        } catch {
+          // cloud optional
+        }
+      }
+      if (cancelled) return;
+      if (loaded) setPage(loaded);
+      else {
+        const p = { ...newPage(), id };
+        setPage(p);
+        persistPage(p);
+      }
+      useBuilder.temporal.getState().clear();
     }
-    useBuilder.temporal.getState().clear();
-  }, [id, setPage]);
+    void load();
+    return () => {
+      cancelled = true;
+    };
+  }, [id, setPage, user]);
 
-  // Debounced autosave.
+  // Debounced autosave to localStorage (+ cloud when signed in).
   useEffect(() => {
-    const t = window.setTimeout(() => persistPage(page), 600);
+    const t = window.setTimeout(() => {
+      persistPage(page);
+      if (user && isAllowed(user.email)) {
+        void saveDraftCloud(page).catch(() => {});
+      }
+    }, 700);
     return () => window.clearTimeout(t);
-  }, [page]);
+  }, [page, user]);
 
   // Keyboard: delete + arrow-nudge the selected element.
   useEffect(() => {
@@ -70,7 +93,6 @@ export default function StudioEditPage() {
     return () => window.removeEventListener('keydown', onKey);
   }, [preview, selectedId, device, remove, updateGeo]);
 
-  // Full-screen overlay so the public site chrome (nav/footer) doesn't show.
   return (
     <div className="fixed inset-0 z-[9999] flex flex-col bg-neutral-100">
       <Toolbar />

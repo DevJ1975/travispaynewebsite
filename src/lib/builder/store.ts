@@ -104,6 +104,7 @@ interface BuilderState {
   preview: boolean;
   setPage: (page: SitePage) => void;
   setTitle: (title: string) => void;
+  setSlug: (slug: string) => void;
   setDevice: (device: Device) => void;
   select: (id: string | null) => void;
   togglePreview: () => void;
@@ -138,6 +139,8 @@ export const useBuilder = create<BuilderState>()(
 
       setPage: (page) => set({ page, selectedId: null }),
       setTitle: (title) => set((s) => ({ page: { ...s.page, title, updatedAt: Date.now() } })),
+      setSlug: (slug) =>
+        set((s) => ({ page: { ...s.page, slug: slug.toLowerCase().trim(), updatedAt: Date.now() } })),
       setDevice: (device) => set({ device }),
       select: (selectedId) => set({ selectedId }),
       togglePreview: () => set((s) => ({ preview: !s.preview, selectedId: null })),

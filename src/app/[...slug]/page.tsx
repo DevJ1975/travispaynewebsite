@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Render } from '@measured/puck/rsc';
-import { puckConfig } from '@/lib/puck/puck.config';
-import { getPublishedPageBySlug } from '@/lib/queries/pages';
+import { SiteRenderer } from '@/components/builder/SiteRenderer';
+import { getPublishedSitePage } from '@/lib/builder/public';
 
-// Catch-all for editor-built pages. More-specific file routes (blog, store, admin,
-// etc.) always win; this only handles slugs with no code route (doc 06 §5).
+// Serves pages published from the freeform builder (/studio). Single-segment slugs only;
+// more-specific code routes (blog, store, admin, …) always win. SSR via Firestore REST.
 export const revalidate = 60;
 
 export async function generateMetadata({
@@ -14,15 +13,15 @@ export async function generateMetadata({
   params: Promise<{ slug: string[] }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const page = await getPublishedPageBySlug(slug.join('/'));
-  if (!page) return {};
-  return { title: page.seoTitle || page.title, description: page.seoDescription };
+  if (slug.length !== 1) return {};
+  const page = await getPublishedSitePage(slug[0]);
+  return page ? { title: page.title } : {};
 }
 
 export default async function CatchAllPage({ params }: { params: Promise<{ slug: string[] }> }) {
   const { slug } = await params;
-  const page = await getPublishedPageBySlug(slug.join('/'));
+  if (slug.length !== 1) notFound();
+  const page = await getPublishedSitePage(slug[0]);
   if (!page) notFound();
-
-  return <Render config={puckConfig} data={page.publishedData} />;
+  return <SiteRenderer page={page} />;
 }

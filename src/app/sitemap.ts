@@ -2,7 +2,6 @@ import type { MetadataRoute } from 'next';
 import { PRODUCTIONS } from '@/content/productions';
 import { getPublishedPosts } from '@/lib/queries/blog';
 import { getPublishedMasterclasses } from '@/lib/queries/masterclasses';
-import { getPublishedPages } from '@/lib/queries/pages';
 import { getActiveProducts } from '@/lib/queries/store';
 import { SITE } from '@/lib/site';
 
@@ -53,18 +52,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: now,
   }));
 
-  const pages = await getPublishedPages();
-  const pageEntries = pages.map((page) => ({
-    url: `${SITE.url}/${page.slug}`,
-    lastModified: page.updatedAt ? new Date(page.updatedAt) : now,
-  }));
-
   return [
     ...staticEntries,
     ...productionEntries,
     ...productEntries,
     ...classEntries,
-    ...pageEntries,
     ...postEntries,
   ];
 }

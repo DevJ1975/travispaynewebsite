@@ -77,6 +77,16 @@ service cloud.firestore {
       allow write: if isEditorOrAdmin();
     }
 
+    // Freeform builder (/studio). Drafts are owner-only; published pages are public-read
+    // and served (SSR) via the Firestore REST API.
+    match /studioPages/{id} {
+      allow read, write: if isSignedIn();
+    }
+    match /publishedPages/{slug} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
     // Default deny. Server-side reads/writes use the Admin SDK and are unaffected.
     match /{document=**} {
       allow read, write: if false;

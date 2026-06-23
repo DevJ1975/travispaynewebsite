@@ -4,7 +4,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useStore } from 'zustand';
 import { persistPage, useBuilder } from '@/lib/builder/store';
-import { DEVICES, DEVICE_LABEL, type ElementType } from '@/lib/builder/types';
+import { isAllowed, publishCloud, saveDraftCloud, signOutStudio } from '@/lib/builder/firestore';
+import { useStudioAuth } from '@/lib/builder/useStudioAuth';
+import { SignInModal } from './SignInModal';
+import { DEVICES, DEVICE_LABEL, type ElementType, type SitePage } from '@/lib/builder/types';
 
 const ADD: { type: ElementType; label: string }[] = [
   { type: 'heading', label: 'Heading' },
@@ -21,34 +24,84 @@ export function Toolbar() {
   const preview = useBuilder((s) => s.preview);
   const setDevice = useBuilder((s) => s.setDevice);
   const setTitle = useBuilder((s) => s.setTitle);
+  const setSlug = useBuilder((s) => s.setSlug);
   const addElement = useBuilder((s) => s.addElement);
   const togglePreview = useBuilder((s) => s.togglePreview);
 
   const canUndo = useStore(useBuilder.temporal, (s) => s.pastStates.length > 0);
   const canRedo = useStore(useBuilder.temporal, (s) => s.futureStates.length > 0);
 
+  const user = useStudioAuth();
   const [addOpen, setAddOpen] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [signInOpen, setSignInOpen] = useState(false);
+  const [wantPublish, setWantPublish] = useState(false);
+  const [msg, setMsg] = useState('');
 
-  function save() {
-    persistPage(useBuilder.getState().page);
-    setSaved(true);
-    window.setTimeout(() => setSaved(false), 1500);
+  async function save() {
+    const current = useBuilder.getState().page;
+    persistPage(current);
+    setMsg('Saved');
+    if (user && isAllowed(user.email)) {
+      try {
+        await saveDraftCloud(current);
+        setMsg('Saved to cloud');
+      } catch {
+        setMsg('Saved locally (cloud sync unavailable)');
+      }
+    }
+    window.setTimeout(() => setMsg(''), 1800);
+  }
+
+  async function doPublish(current: SitePage) {
+    setMsg('Publishing…');
+    try {
+      persistPage(current);
+      await publishCloud(current);
+      setMsg(`Published → /${current.slug}`);
+    } catch {
+      setMsg('Publish failed — enable Firestore in the console, then retry.');
+    }
+    window.setTimeout(() => setMsg(''), 4000);
+  }
+
+  function publish() {
+    const current = useBuilder.getState().page;
+    if (!current.slug || !/^[a-z0-9-]+$/.test(current.slug)) {
+      setMsg('Set a URL slug (lowercase letters, numbers, hyphens) to publish.');
+      window.setTimeout(() => setMsg(''), 3000);
+      return;
+    }
+    if (!user || !isAllowed(user.email)) {
+      setWantPublish(true);
+      setSignInOpen(true);
+      return;
+    }
+    void doPublish(current);
   }
 
   return (
-    <header className="flex items-center gap-3 border-b border-neutral-200 bg-white px-4 py-2">
+    <header className="flex flex-wrap items-center gap-2 border-b border-neutral-200 bg-white px-4 py-2">
       <Link href="/studio" className="text-sm font-semibold text-neutral-700 hover:text-neutral-900">
         ← Studio
       </Link>
       <input
         value={page.title}
         onChange={(e) => setTitle(e.target.value)}
-        className="w-48 rounded border border-transparent px-2 py-1 text-sm text-neutral-800 hover:border-neutral-300 focus:border-neutral-300"
+        className="w-40 rounded border border-transparent px-2 py-1 text-sm text-neutral-800 hover:border-neutral-300 focus:border-neutral-300"
+        aria-label="Page title"
       />
+      <div className="flex items-center text-xs text-neutral-400">
+        /
+        <input
+          value={page.slug}
+          onChange={(e) => setSlug(e.target.value)}
+          placeholder="url-slug"
+          className="w-28 rounded border border-neutral-200 px-2 py-1 text-neutral-700"
+          aria-label="URL slug"
+        />
+      </div>
 
-      {/* device switch */}
-      <div className="ml-2 flex rounded-md border border-neutral-300 p-0.5">
+      <div className="ml-1 flex rounded-md border border-neutral-300 p-0.5">
         {DEVICES.map((d) => (
           <button
             key={d}
@@ -61,7 +114,6 @@ export function Toolbar() {
         ))}
       </div>
 
-      {/* undo / redo */}
       <div className="flex gap-1">
         <button
           type="button"
@@ -81,7 +133,6 @@ export function Toolbar() {
         </button>
       </div>
 
-      {/* add */}
       <div className="relative">
         <button
           type="button"
@@ -110,7 +161,25 @@ export function Toolbar() {
       </div>
 
       <div className="ml-auto flex items-center gap-2">
-        {saved && <span className="text-xs text-green-600">Saved</span>}
+        {msg && <span className="text-xs text-neutral-500">{msg}</span>}
+        {user ? (
+          <button
+            type="button"
+            onClick={() => void signOutStudio()}
+            className="text-xs text-neutral-500 hover:text-neutral-800"
+            title={user.email ?? undefined}
+          >
+            Sign out
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setSignInOpen(true)}
+            className="text-xs text-neutral-500 hover:text-neutral-800"
+          >
+            Sign in
+          </button>
+        )}
         <button
           type="button"
           onClick={togglePreview}
@@ -120,12 +189,35 @@ export function Toolbar() {
         </button>
         <button
           type="button"
-          onClick={save}
-          className="rounded bg-neutral-800 px-3 py-1 text-xs font-medium text-white"
+          onClick={() => void save()}
+          className="rounded border border-neutral-300 px-3 py-1 text-xs text-neutral-700"
         >
           Save
         </button>
+        <button
+          type="button"
+          onClick={publish}
+          className="rounded bg-tp-gold px-3 py-1 text-xs font-semibold text-tp-black"
+        >
+          Publish
+        </button>
       </div>
+
+      {signInOpen && (
+        <SignInModal
+          onClose={() => {
+            setSignInOpen(false);
+            setWantPublish(false);
+          }}
+          onSuccess={() => {
+            setSignInOpen(false);
+            if (wantPublish) {
+              setWantPublish(false);
+              void doPublish(useBuilder.getState().page);
+            }
+          }}
+        />
+      )}
     </header>
   );
 }
