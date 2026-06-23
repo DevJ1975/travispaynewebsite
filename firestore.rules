@@ -1,11 +1,34 @@
 rules_version = '2';
 
-// Phase 0 placeholder: locked by default. The full, collection-by-collection
-// rules (public reads for published content, role-gated writes, enrollment
-// checks, etc.) are specified in docs/04-backend-google-cloud.md §4 and
-// docs/06-visual-editor-cms.md, and land with their respective phases.
+// Phase 2 rules. Server access uses the Admin SDK (bypasses rules); these protect
+// any client-side access. blogPosts: public read of published, editor/admin writes,
+// admin-only delete (doc 04 §4). All other collections remain locked by default
+// until their phases land.
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function hasClaim(claim) {
+      return isSignedIn() && request.auth.token[claim] == true;
+    }
+    function isEditorOrAdmin() {
+      return hasClaim('admin') || hasClaim('editor');
+    }
+    function isAdmin() {
+      return hasClaim('admin');
+    }
+    function isPublished(data) {
+      return data.status == 'published';
+    }
+
+    match /blogPosts/{postId} {
+      allow read: if isPublished(resource.data) || isEditorOrAdmin();
+      allow create, update: if isEditorOrAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Default deny. Server-side reads/writes use the Admin SDK and are unaffected.
     match /{document=**} {
       allow read, write: if false;
     }
