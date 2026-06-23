@@ -3,6 +3,8 @@ import { Cormorant_Garamond, DM_Mono, DM_Sans } from 'next/font/google';
 import { SiteNav } from '@/components/layout/SiteNav';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { CartHydrator } from '@/components/store/CartHydrator';
+import { ScrollProgress } from '@/components/ui/ScrollProgress';
+import { BackToTop } from '@/components/ui/BackToTop';
 import { SITE } from '@/lib/site';
 import './globals.css';
 
@@ -48,10 +50,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body className="min-h-screen bg-tp-black font-body text-tp-white">
+        <a
+          href="#main"
+          className="sr-only rounded-tp-md bg-tp-gold px-4 py-2 font-medium text-tp-black focus:absolute focus:left-4 focus:top-4 focus:z-cursor focus:not-sr-only"
+        >
+          Skip to content
+        </a>
+        <ScrollProgress />
         <CartHydrator />
         <SiteNav />
-        <main>{children}</main>
+        <main id="main">{children}</main>
         <SiteFooter />
+        <BackToTop />
       </body>
     </html>
   );

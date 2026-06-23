@@ -1,3 +1,5 @@
+import { CountUp } from '@/components/ui/CountUp';
+
 const STATS = [
   { value: '30+', label: 'Years' },
   { value: '50+', label: 'Productions' },
@@ -13,7 +15,9 @@ export function StatsBar() {
         <div key={stat.label} className="text-center">
           <dt className="sr-only">{stat.label}</dt>
           <dd>
-            <span className="block font-display text-display-sm text-tp-gold">{stat.value}</span>
+            <span className="block font-display text-display-sm text-tp-gold">
+              <CountUp value={stat.value} />
+            </span>
             <span className="mt-1 block text-sm uppercase tracking-wider text-tp-gray">
               {stat.label}
             </span>
