@@ -41,6 +41,25 @@ export async function POST(request: Request) {
           createdAt: FieldValue.serverTimestamp(),
           updatedAt: FieldValue.serverTimestamp(),
         });
+        // Masterclass purchase → grant enrollment (doc 04 §Masterclasses).
+        const classId = session.metadata?.classId;
+        const enrollUid = session.metadata?.uid;
+        if (classId && enrollUid) {
+          await adminDb
+            .collection('enrollments')
+            .doc(`${enrollUid}_${classId}`)
+            .set(
+              {
+                uid: enrollUid,
+                masterclassId: classId,
+                status: 'active',
+                orderId: session.id,
+                enrolledAt: FieldValue.serverTimestamp(),
+              },
+              { merge: true },
+            );
+        }
+
         const email = session.customer_details?.email;
         if (email) {
           await adminDb.collection('mail').add({

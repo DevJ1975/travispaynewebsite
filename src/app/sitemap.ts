@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { PRODUCTIONS } from '@/content/productions';
 import { getPublishedPosts } from '@/lib/queries/blog';
+import { getPublishedMasterclasses } from '@/lib/queries/masterclasses';
 import { getActiveProducts } from '@/lib/queries/store';
 import { SITE } from '@/lib/site';
 
@@ -45,5 +46,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: now,
   }));
 
-  return [...staticEntries, ...productionEntries, ...productEntries, ...postEntries];
+  const classes = await getPublishedMasterclasses();
+  const classEntries = classes.map((cls) => ({
+    url: `${SITE.url}/masterclasses/${cls.slug}`,
+    lastModified: now,
+  }));
+
+  return [
+    ...staticEntries,
+    ...productionEntries,
+    ...productEntries,
+    ...classEntries,
+    ...postEntries,
+  ];
 }

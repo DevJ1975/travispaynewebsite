@@ -44,6 +44,23 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /masterclasses/{classId} {
+      allow read: if resource.data.status == 'published' || isEditorOrAdmin();
+      allow write: if isAdmin();
+
+      match /lessons/{lessonId} {
+        // Gated playback tokens are issued server-side; lesson metadata stays staff-only.
+        allow read: if isEditorOrAdmin();
+        allow write: if isAdmin();
+      }
+    }
+
+    match /enrollments/{enrollmentId} {
+      allow read: if isSignedIn() && (resource.data.uid == request.auth.uid || isEditorOrAdmin());
+      // Server-only: free-enroll action and the Stripe webhook write via the Admin SDK.
+      allow write: if false;
+    }
+
     // Default deny. Server-side reads/writes use the Admin SDK and are unaffected.
     match /{document=**} {
       allow read, write: if false;
