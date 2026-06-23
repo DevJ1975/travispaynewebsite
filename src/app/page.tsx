@@ -1,6 +1,12 @@
 import Link from 'next/link';
+import { Eyebrow, Section, SectionHeading } from '@/components/ui/Section';
+import { Reveal, Stagger, StaggerItem } from '@/components/ui/Reveal';
+import { LogoMarquee } from '@/components/marketing/LogoMarquee';
+import { StatsBar } from '@/components/marketing/StatsBar';
+import { ProductionCard } from '@/components/cards/ProductionCard';
+import { PRODUCTIONS } from '@/content/productions';
+import { ALL_PARTNERS } from '@/content/partners';
 
-// Notable collaborators (doc 01 §3). Duplicated in the marquee for a seamless loop.
 const COLLABORATORS = [
   'Michael Jackson',
   'Janet Jackson',
@@ -14,10 +20,12 @@ const COLLABORATORS = [
   'Cirque du Soleil',
 ];
 
+const featured = PRODUCTIONS.slice(0, 3);
+
 export default function HomePage() {
   return (
     <>
-      {/* HERO — placeholder shell; the looping video reel lands in Phase 1 (doc 03 §7.2). */}
+      {/* HERO — placeholder shell; the looping video reel lands as a Phase-1 polish (doc 03 §7.2). */}
       <section className="relative flex min-h-[92vh] flex-col justify-end overflow-hidden px-6 pb-24 pt-32 md:px-16">
         <div
           aria-hidden
@@ -56,38 +64,119 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* LEGACY MARQUEE (doc 03 §7.6). */}
-      <section
-        aria-label="Notable collaborators"
-        className="overflow-hidden border-y border-tp-border bg-tp-black py-6"
-      >
-        <div className="animate-marquee flex w-max gap-12 whitespace-nowrap font-mono text-sm uppercase tracking-[0.2em] text-tp-gold/80">
-          {[...COLLABORATORS, ...COLLABORATORS].map((name, index) => (
-            <span key={`${name}-${index}`} aria-hidden={index >= COLLABORATORS.length}>
-              {name}
-            </span>
-          ))}
-        </div>
-      </section>
+      <LogoMarquee items={COLLABORATORS} />
 
-      {/* CONTACT TEASER (doc 03 §8.1). */}
-      <section className="mx-auto max-w-content px-6 py-24 text-center md:px-16">
-        <p className="text-overline uppercase text-tp-gold">Get in touch</p>
-        <h2 className="mt-4 font-display text-display-md font-light text-tp-white">
-          Let us create something extraordinary
-        </h2>
-        <p className="mx-auto mt-5 max-w-narrow text-tp-gray">
-          Booking choreography, direction, and production for tours, film, television, and brands.
-        </p>
-        <div className="mt-8 flex justify-center gap-4">
+      {/* ABOUT TEASER */}
+      <Section className="py-24">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
+          <Reveal>
+            <div
+              aria-hidden
+              className="aspect-[3/4] rounded-tp-lg bg-gradient-to-br from-tp-elevated to-tp-black"
+            />
+          </Reveal>
+          <Reveal>
+            <Eyebrow>About Travis</Eyebrow>
+            <h2 className="mt-3 font-display text-display-md font-light text-tp-white">
+              More Than a Choreographer
+            </h2>
+            <p className="mt-5 text-lg leading-relaxed text-tp-gray">
+              From a roughly twenty-year collaboration with Michael Jackson to founding Travis Payne
+              Productions, Travis has spent his career defining the moments that shape popular
+              culture.
+            </p>
+            <Link
+              href="/about"
+              className="mt-8 inline-flex h-11 items-center rounded-tp-md border border-tp-border px-6 text-tp-white transition-colors hover:border-tp-gold hover:text-tp-gold"
+            >
+              Read the Full Story
+            </Link>
+          </Reveal>
+        </div>
+      </Section>
+
+      {/* FEATURED PRODUCTIONS */}
+      <Section className="py-24">
+        <div className="mb-12 flex items-end justify-between gap-4">
+          <SectionHeading eyebrow="Selected Works" title="Moments That Define" />
           <Link
-            href="/contact"
-            className="inline-flex h-11 items-center rounded-tp-md border border-tp-gold px-6 text-tp-gold transition-colors hover:bg-tp-gold hover:text-tp-black"
+            href="/productions"
+            className="hidden whitespace-nowrap text-sm text-tp-gold hover:underline sm:block"
           >
-            Contact
+            View All →
           </Link>
         </div>
-      </section>
+        <Stagger className="grid gap-6 md:grid-cols-3">
+          {featured.map((production) => (
+            <StaggerItem key={production.slug}>
+              <ProductionCard production={production} />
+            </StaggerItem>
+          ))}
+        </Stagger>
+      </Section>
+
+      {/* STATS */}
+      <Section className="border-y border-tp-border bg-tp-surface py-20">
+        <Reveal>
+          <StatsBar />
+        </Reveal>
+      </Section>
+
+      {/* MASTERCLASS CTA */}
+      <Section className="py-24">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
+          <Reveal>
+            <Eyebrow>Online Masterclasses</Eyebrow>
+            <h2 className="mt-3 font-display text-display-md font-light text-tp-white">
+              Train with the World&rsquo;s Best
+            </h2>
+            <p className="mt-5 text-lg leading-relaxed text-tp-gray">
+              World-class online dance education with Travis Payne and Stacy Walker.
+            </p>
+            <Link
+              href="/masterclasses"
+              className="mt-8 inline-flex h-11 items-center rounded-tp-md border border-tp-gold px-6 text-tp-gold transition-colors hover:bg-tp-gold hover:text-tp-black"
+            >
+              Browse Masterclasses
+            </Link>
+          </Reveal>
+          <Reveal>
+            <div
+              aria-hidden
+              className="aspect-video rounded-tp-lg bg-gradient-to-br from-tp-elevated to-tp-black"
+            />
+          </Reveal>
+        </div>
+      </Section>
+
+      <LogoMarquee items={ALL_PARTNERS} label="In Partnership With" />
+
+      {/* CONTACT TEASER */}
+      <Section className="py-24 text-center">
+        <Reveal>
+          <Eyebrow>Get in touch</Eyebrow>
+          <h2 className="mt-4 font-display text-display-md font-light text-tp-white">
+            Let us create something extraordinary
+          </h2>
+          <p className="mx-auto mt-5 max-w-narrow text-tp-gray">
+            Booking choreography, direction, and production for tours, film, television, and brands.
+          </p>
+          <div className="mt-8 flex justify-center gap-4">
+            <Link
+              href="/book"
+              className="inline-flex h-11 items-center rounded-tp-md bg-tp-gold px-6 font-medium text-tp-black transition-colors hover:bg-tp-gold-dk"
+            >
+              Book Travis
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex h-11 items-center rounded-tp-md border border-tp-border px-6 text-tp-white transition-colors hover:border-tp-gold hover:text-tp-gold"
+            >
+              Contact
+            </Link>
+          </div>
+        </Reveal>
+      </Section>
     </>
   );
 }

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { NewsletterForm } from '@/components/forms/NewsletterForm';
 import { NAV_LINKS, SITE, SOCIAL_LINKS } from '@/lib/site';
 
 /** Site footer (doc 03 §7.12). Newsletter wiring lands in Phase 1 (Server Action). */
@@ -49,20 +50,7 @@ export function SiteFooter() {
         <div>
           <h2 className="text-overline uppercase text-tp-gold">Newsletter</h2>
           <p className="mt-4 text-sm text-tp-gray">News from the studio. No spam.</p>
-          <form className="mt-4 flex gap-2" aria-label="Newsletter signup">
-            <input
-              type="email"
-              required
-              placeholder="Email address"
-              className="min-h-[44px] flex-1 rounded-tp-md border border-tp-border bg-tp-subtle px-3 text-sm text-tp-white placeholder:text-tp-muted"
-            />
-            <button
-              type="submit"
-              className="rounded-tp-md bg-tp-gold px-4 text-sm font-medium text-tp-black"
-            >
-              Join
-            </button>
-          </form>
+          <NewsletterForm />
         </div>
       </div>
 
