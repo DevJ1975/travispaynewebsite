@@ -10,6 +10,12 @@ design refresh, a real blog, a store, gated masterclasses, and booking.
 > video, enrollments), the Wix/Duda-style **visual page builder** (Puck), and Phase 5
 > polish (count-up stats, hero reel, page transitions, scroll progress, a11y, branded 404).
 > Remaining work is infra wiring + real content/assets. The **plan** lives in `docs/`.
+>
+> **Plus a true freeform "Studio" page builder** (`/studio`) — drag-anywhere canvas,
+> per-device (desktop/tablet/mobile) layouts, total-freedom styling, undo/redo, cloud
+> persistence + publish, and **public SSR rendering** — backed by the **Firebase** connection
+> (project `travis-payne`). See [`docs/08`](docs/08-owner-manual.md) (owner manual),
+> [`docs/07`](docs/07-wysiwyg-knowledge-base.md) (research), [`docs/09`](docs/09-firebase-deploy.md) (deploy).
 
 ## 📋 The plan (`docs/`)
 | Doc | Contents |
@@ -20,7 +26,10 @@ design refresh, a real blog, a store, gated masterclasses, and booking.
 | [`docs/03-uiux-design-system.md`](docs/03-uiux-design-system.md) | Brand, design tokens, motion, wireframes (UI/UX agent) |
 | [`docs/04-backend-google-cloud.md`](docs/04-backend-google-cloud.md) | Firebase/GCP, data models, store, blog, auth, cost (Back-End agent) |
 | [`docs/05-plan-review-and-decisions.md`](docs/05-plan-review-and-decisions.md) | **Lead reconciliation** — cross-doc conflicts resolved, canonical decisions (authoritative) |
-| [`docs/06-visual-editor-cms.md`](docs/06-visual-editor-cms.md) | **Wix/Duda-style visual page builder** — block-based editor (Puck), `pages` model, publish workflow |
+| [`docs/06-visual-editor-cms.md`](docs/06-visual-editor-cms.md) | Original block-based editor spec (Puck) — superseded by the freeform Studio builder |
+| [`docs/07-wysiwyg-knowledge-base.md`](docs/07-wysiwyg-knowledge-base.md) | Research KB: Wix/Squarespace/Webflow et al. — features, best practices, capability matrix |
+| [`docs/08-owner-manual.md`](docs/08-owner-manual.md) | **Owner's manual** for the freeform Studio editor (sendable to non-technical users) |
+| [`docs/09-firebase-deploy.md`](docs/09-firebase-deploy.md) | Firebase connection + App Hosting deploy guide |
 
 ## 🤖 Specialist agents (`.claude/agents/`)
 Reusable Claude Code subagents created for this project:
