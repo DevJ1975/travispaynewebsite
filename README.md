@@ -4,11 +4,11 @@ Rebuild of **travispayne.com** (currently on Duda) as a modern **React / Next.js
 site backed by a **Google (Firebase / Google Cloud)** backend — with a cinematic
 design refresh, a real blog, a store, gated masterclasses, and booking.
 
-> **Status:** **Phase 2 (Blog + CMS) — complete.** Phases 0–2 are built and the full
-> verification gate (lint · typecheck · test · build) is green: the marketing site
-> plus a blog (index, posts, RSS, sitemap) and a Firestore-backed `/admin` CMS with
-> session-cookie auth and on-demand ISR. The rebuild **plan** lives in `docs/`; see
-> [`docs/05`](docs/05-plan-review-and-decisions.md) §6 for remaining infra items.
+> **Status:** **Phase 3 (Store) — complete.** Phases 0–3 are built and the full
+> verification gate (lint · typecheck · test · build) is green: the marketing site,
+> a blog + `/admin` CMS, and a store (catalog, cart, Stripe Checkout with Google Pay,
+> webhook order fulfillment, admin orders). The rebuild **plan** lives in `docs/`;
+> see [`docs/05`](docs/05-plan-review-and-decisions.md) §6 for remaining infra items.
 
 ## 📋 The plan (`docs/`)
 | Doc | Contents |
@@ -67,7 +67,7 @@ firebase.json      # Firestore/Storage rules + emulators
 ```
 
 ## Next step
-Continue with **Phase 3 — Store** (products, cart, Stripe Checkout + Google Pay,
-order emails) per `docs/00-overview-and-roadmap.md`, or stand up the three Firebase
-projects to enable App Hosting preview deploys and live data/auth — forms, the blog
-CMS, and admin login all persist once Firebase is connected.
+Continue with **Phase 4 — Masterclasses** (gated video via Mux, enrollments,
+memberships) per `docs/00-overview-and-roadmap.md`, or stand up the Firebase projects
+and Stripe keys to enable live data/auth/payments and App Hosting preview deploys —
+forms, the blog CMS, admin login, and checkout all activate once configured.
