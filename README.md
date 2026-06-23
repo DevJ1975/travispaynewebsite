@@ -4,11 +4,11 @@ Rebuild of **travispayne.com** (currently on Duda) as a modern **React / Next.js
 site backed by a **Google (Firebase / Google Cloud)** backend — with a cinematic
 design refresh, a real blog, a store, gated masterclasses, and booking.
 
-> **Status:** **Phases 0–4 complete.** All core feature phases are built and the full
-> verification gate (lint · typecheck · test · build) is green: marketing site, blog +
-> `/admin` CMS, store (Stripe Checkout / Google Pay), and masterclasses (gated Mux video,
-> enrollments). Remaining: the Wix/Duda-style **Visual Page Builder** (Phase 2.5,
-> [`docs/06`](docs/06-visual-editor-cms.md)) and live infra wiring. The **plan** lives in `docs/`.
+> **Status:** **Feature-complete (Phases 0–4 + 2.5).** Every planned phase is built and
+> the full verification gate (lint · typecheck · test · build) is green: marketing site,
+> blog + `/admin` CMS, store (Stripe Checkout / Google Pay), masterclasses (gated Mux
+> video, enrollments), and the Wix/Duda-style **visual page builder** (Puck). Remaining
+> work is infra wiring + real content/assets. The **plan** lives in `docs/`.
 
 ## 📋 The plan (`docs/`)
 | Doc | Contents |
@@ -67,8 +67,7 @@ firebase.json      # Firestore/Storage rules + emulators
 ```
 
 ## Next step
-Build the **Visual Page Builder** (Phase 2.5, [`docs/06`](docs/06-visual-editor-cms.md) —
-a Puck block editor so the owner can edit pages like Wix/Duda), or stand up the Firebase
-projects + Stripe/Mux keys to make data, auth, payments, and gated video live (and enable
-App Hosting preview deploys). Forms, the blog CMS, admin login, checkout, and enrollments
-all activate once configured.
+Stand up the Firebase projects + Stripe/Mux keys + Secret Manager values to make everything
+live — auth, forms, blog CMS, checkout, enrollments, gated video, and the page builder all
+activate once configured — and enable App Hosting preview deploys (see [`docs/05`](docs/05-plan-review-and-decisions.md) §6).
+Then swap the on-brand gradient placeholders for real photography/video (doc 01 §7).
