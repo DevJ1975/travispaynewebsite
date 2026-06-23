@@ -12,18 +12,18 @@ phone and computer, and **publish** them to your live site.
 
 ## 2. What you need
 - The **editor address**: `https://travispayne.com/studio` (or your preview link ending in `/studio`).
-- A **sign-in** (email + password) — needed only to **publish** (your developer sets this up
-  in Firebase and gives you the login). You can design without signing in; you sign in when
-  you're ready to put a page online.
+- A **sign-in** (email + password). **You must log in to open the editor** — your developer
+  creates your login in Firebase and gives it to you. (Only approved editor emails can sign in.)
 
-## 3. Open the editor
-1. Go to **`/studio`**.
-2. Click **New page** (or **Edit** on an existing one).
-3. The editor opens full-screen.
+## 3. Log in and open the editor
+1. Go to **`/studio`** — you'll be sent to the **sign-in** page (`/studio/login`).
+2. Enter your **email and password** and click **Sign in**.
+3. You'll land on the **Studio** page list. Click **New page** (or **Edit** on an existing one).
+4. The editor opens full-screen. (To leave, use **Sign out** on the Studio page.)
 
 ## 4. The editor at a glance
 - **Top bar (toolbar):** page title, the page's **URL slug**, device buttons
-  (Desktop / Tablet / Mobile), **Undo/Redo**, **+ Add**, **Sign in**, **Preview**, **Save**,
+  (Desktop / Tablet / Mobile), **Undo/Redo**, **+ Add**, **Sign out**, **Preview**, **Save**,
   **Publish**.
 - **Middle (canvas):** your page. A faint grid helps you line things up.
 - **Right (inspector):** settings for whatever you've selected (text, color, size, position…).
@@ -94,9 +94,8 @@ You can also tick **"Hidden on Mobile"** (right panel) to hide an item on a spec
 
 ## 12. Publish (put it online)
 1. Set the **URL slug** in the top bar.
-2. Click **Publish**.
-3. If asked, **sign in** with your editor email/password.
-4. You'll see **"Published → /your-slug"** — your page is now live at
+2. Click **Publish** (you're already signed in from opening the editor).
+3. You'll see **"Published → /your-slug"** — your page is now live at
    `travispayne.com/your-slug`. Re-publish anytime you make changes.
 
 ## 13. Tips for a great page
@@ -109,8 +108,9 @@ You can also tick **"Hidden on Mobile"** (right panel) to hide an item on a spec
 ## 14. Troubleshooting
 - **"Publish failed — enable Firestore…":** the database isn't turned on yet. Ask your
   developer to complete the one-time Firebase setup (see `docs/09-firebase-deploy.md`).
-- **Can't sign in:** confirm Email/Password sign-in is enabled and your account exists in
-  Firebase; double-check the email/password.
+- **Can't sign in / "not an editor":** confirm Email/Password sign-in is enabled and your
+  account exists in Firebase, that your email is on the editor allowlist, and double-check the
+  password. The login page is at **`/studio/login`**.
 - **"Could not load your media" / upload fails:** make sure you're **signed in**, and ask your
   developer to enable **Cloud Storage** and deploy the storage rules (one-time, see
   `docs/09-firebase-deploy.md`). Images must be under **10 MB**.

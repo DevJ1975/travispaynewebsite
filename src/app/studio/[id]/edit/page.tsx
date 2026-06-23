@@ -8,8 +8,9 @@ import { useStudioAuth } from '@/lib/builder/useStudioAuth';
 import { Toolbar } from '@/components/builder/Toolbar';
 import { FreeformCanvas } from '@/components/builder/FreeformCanvas';
 import { Inspector } from '@/components/builder/Inspector';
+import { StudioAuthGate } from '@/components/builder/StudioAuthGate';
 
-export default function StudioEditPage() {
+function StudioEditInner() {
   const params = useParams<{ id: string }>();
   const id = params.id;
   const user = useStudioAuth();
@@ -101,5 +102,13 @@ export default function StudioEditPage() {
         {!preview && <Inspector />}
       </div>
     </div>
+  );
+}
+
+export default function StudioEditPage() {
+  return (
+    <StudioAuthGate>
+      <StudioEditInner />
+    </StudioAuthGate>
   );
 }

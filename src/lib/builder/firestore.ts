@@ -8,18 +8,24 @@ import type { SitePage } from './types';
 // served (SSR) by the catch-all via the Firestore REST API. All calls throw on failure;
 // callers handle it (e.g. when Firestore isn't enabled yet or the user isn't signed in).
 
+// Editors allowed into the Studio builder. The list is public (it gates the client UI; cloud
+// writes are also enforced by Firestore/Storage rules), so we bake the owner's emails as an
+// env-overridable default — mirroring the baked Firebase web config — so the gate is enforced
+// in every environment without env wiring. An empty list would make isAllowed() pass everyone,
+// so we never return empty.
+const DEFAULT_EDITOR_EMAILS = ['travis@travispayne.com', 'jamil@trainovations.com'];
+
 export function editorEmails(): string[] {
-  return (process.env.NEXT_PUBLIC_EDITOR_EMAILS ?? '')
+  const list = (process.env.NEXT_PUBLIC_EDITOR_EMAILS ?? '')
     .split(',')
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean);
+  return list.length ? list : DEFAULT_EDITOR_EMAILS;
 }
 
-/** With no allowlist configured, any signed-in user is allowed (tighten in the console/rules). */
+/** True when the signed-in email is on the editor allowlist (always non-empty — see above). */
 export function isAllowed(email: string | null | undefined): boolean {
-  const list = editorEmails();
-  if (list.length === 0) return true;
-  return Boolean(email) && list.includes(email!.toLowerCase());
+  return Boolean(email) && editorEmails().includes(email!.toLowerCase());
 }
 
 export async function signIn(email: string, password: string): Promise<void> {

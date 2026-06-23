@@ -8,8 +8,11 @@ code is needed to connect. To point a build at a different project, set the
 
 ## 2. One-time Firebase console setup (owner)
 In the [Firebase console](https://console.firebase.google.com/project/travis-payne):
-1. **Authentication → Sign-in method →** enable **Email/Password**. Add the owner's user
-   (Users → Add user) and add that email to `NEXT_PUBLIC_EDITOR_EMAILS`.
+1. **Authentication → Sign-in method →** enable **Email/Password**. Then **Users → Add user**
+   to create the editor logins — `travis@travispayne.com` and `jamil@trainovations.com` (these
+   two emails are the baked-in editor allowlist in `src/lib/builder/firestore.ts`; set
+   `NEXT_PUBLIC_EDITOR_EMAILS` only to override). These accounts are required to sign in at
+   **`/studio/login`** and open the page builder.
 2. **Firestore Database →** create database (production mode).
 3. **Storage →** enable (for media uploads).
 4. **Upgrade to the Blaze plan** (required for App Hosting / Cloud Functions).

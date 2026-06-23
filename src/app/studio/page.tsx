@@ -4,10 +4,14 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { deletePage, loadAllPages, newPage, persistPage } from '@/lib/builder/store';
+import { signOutStudio } from '@/lib/builder/firestore';
+import { useStudioAuth } from '@/lib/builder/useStudioAuth';
+import { StudioAuthGate } from '@/components/builder/StudioAuthGate';
 import type { SitePage } from '@/lib/builder/types';
 
-export default function StudioListPage() {
+function StudioListInner() {
   const router = useRouter();
+  const user = useStudioAuth();
   const [pages, setPages] = useState<SitePage[]>([]);
 
   useEffect(() => {
@@ -43,9 +47,17 @@ export default function StudioListPage() {
         </button>
       </div>
 
+      <div className="mt-3 flex items-center gap-3 text-xs text-tp-muted">
+        {user?.email && <span>Signed in as {user.email}</span>}
+        <button type="button" onClick={() => void signOutStudio()} className="text-tp-gold hover:underline">
+          Sign out
+        </button>
+      </div>
+
       <p className="mt-4 max-w-prose text-sm text-tp-muted">
-        Drag elements anywhere, resize and layer them, and design each device separately. (V1
-        saves to this browser; cloud sync and publishing land in the next update.)
+        Drag elements anywhere, resize and layer them, and design each device separately. Your work
+        autosaves to this browser and syncs to the cloud; use <strong>Publish</strong> in the editor
+        to put a page live.
       </p>
 
       <div className="mt-10">
@@ -80,5 +92,13 @@ export default function StudioListPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function StudioListPage() {
+  return (
+    <StudioAuthGate>
+      <StudioListInner />
+    </StudioAuthGate>
   );
 }
