@@ -3,6 +3,7 @@ import { Cormorant_Garamond, DM_Mono, DM_Sans } from 'next/font/google';
 import { SiteNav } from '@/components/layout/SiteNav';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { CartHydrator } from '@/components/store/CartHydrator';
+import { FirebaseAnalytics } from '@/components/FirebaseAnalytics';
 import { ScrollProgress } from '@/components/ui/ScrollProgress';
 import { BackToTop } from '@/components/ui/BackToTop';
 import { SITE } from '@/lib/site';
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <ScrollProgress />
         <CartHydrator />
+        <FirebaseAnalytics />
         <SiteNav />
         <main id="main">{children}</main>
         <SiteFooter />
