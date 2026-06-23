@@ -57,6 +57,7 @@ Severity: 🔴 will break the build / mislead implementers · 🟠 inconsistency
 | CMS | Firestore + custom `/admin` (Tiptap → Markdown in `blogPosts.bodyMdx`) |
 | Hosting | Firebase App Hosting (SSR on Cloud Run) |
 | Auth roles | `customer` / `editor` / `admin` (+ unauthenticated) |
+| Visual editor | **Puck** (block-based, Wix/Duda-style); page layouts as JSON in Firestore `pages` (doc 06) |
 
 ---
 
@@ -65,7 +66,8 @@ Severity: 🔴 will break the build / mislead implementers · 🟠 inconsistency
 ### 3.1 Firestore collections (authoritative names)
 `blogPosts` · `products` (+ `/variants`) · `orders` · `carts` · `customers` (+ `/addresses`) ·
 `team` · `partners` · `productions` · `masterclasses` (+ `/lessons`) · `enrollments` ·
-`bookings` · `newsletterSubscribers` · `siteSettings` · `masterclassSeries` · `mail` (Trigger Email).
+`bookings` · `newsletterSubscribers` · `siteSettings` · `masterclassSeries` ·
+`pages` (+ `/revisions`, visual page builder — doc 06) · `mail` (Trigger Email).
 
 > `02`'s query functions in `src/lib/queries/*` must use these exact names. The `02`
 > example previously read `posts` — corrected to `blogPosts`.
@@ -170,6 +172,7 @@ everything else needs — do them first in Phase 0.
 | D3 | Masterclass video host: Mux vs unlisted YouTube vs Storage | **Mux** (best UX); YouTube if budget-first |
 | D4 | Email SMTP provider behind Trigger Email | **SendGrid** (Resend acceptable) |
 | D5 | Membership/subscription for masterclasses | **Yes, fast-follow** — recurring revenue |
-| D6 | Repo base branch / PR (repo was empty) | Initialize `main`, open draft PR — *awaiting your go-ahead* |
+| D6 | Repo base branch / PR (repo was empty) | ✅ Done — `main` initialized, draft PR #1 open |
+| D7 | Visual editor: block-based vs pixel-freeform | **Block-based via Puck** — protects the design, no SaaS cost (see `06`) |
 
 *Prepared as the orchestration/reconciliation layer over docs 02–04.*

@@ -16,7 +16,8 @@ live in `.claude/agents/` so they can be re-invoked throughout the build):
 
 Read order: **01** (what exists) → **03** (how it should look) → **04** (the data &
 services) → **02** (how it's built) → **05** (lead review — conflicts resolved &
-canonical decisions, **authoritative** where docs disagree) → back here for the **roadmap**.
+canonical decisions, **authoritative** where docs disagree) → **06** (Wix/Duda-style
+visual page builder) → back here for the **roadmap**.
 
 > **`docs/05-plan-review-and-decisions.md`** is the orchestration layer over the three
 > specialist docs: it reconciles the seams between them (token names, collection names,
@@ -78,6 +79,9 @@ Detailed schemas, security rules, and cost in `04-backend-google-cloud.md`.
 - **Email** — Firebase "Trigger Email" extension (SendGrid/SMTP) for order
   confirmations, contact replies, newsletter.
 - **Analytics/SEO** — GA4 + Google Tag Manager, sitemap/robots, structured data.
+- **Visual page builder** — the owner edits marketing pages like Wix/Duda via a
+  block-based editor (Puck); page layouts are stored as JSON in Firestore `pages`
+  with draft/publish + version history. See `06-visual-editor-cms.md`.
 
 ### Things you haven't thought of (high-value adds)
 1. **Gated online Masterclasses (mini-LMS)** — Travis & Stacy's existing offering,
@@ -103,6 +107,7 @@ Detailed schemas, security rules, and cost in `04-backend-google-cloud.md`.
 | **0 — Foundations** | Repo scaffold, Next.js + TS + Tailwind, design tokens, Firebase projects (dev/staging/prod), CI/CD | Running skeleton, deploy pipeline | 3–5 days |
 | **1 — Marketing site** | Home, About, Team, Partners, Productions (index + detail), Contact | Content-complete public site, redirects, SEO | 1.5–2.5 wks |
 | **2 — Blog + CMS** | `blogPosts` model, `/admin` editor, blog index/post, RSS/sitemap | Self-serve publishing | 1–1.5 wks |
+| **2.5 — Visual Page Builder** | Puck block editor, `pages` collection (draft/publish + revisions), `/admin/pages`, `[[...slug]]` render route, media picker, nav editor | Owner edits & publishes marketing pages with no code (Wix/Duda-style) | ~2–2.5 wks (~12 dev-days) |
 | **3 — Store** | Products/cart/checkout, Stripe + Google Pay, order emails, admin orders | Working e-commerce | 2–3 wks |
 | **4 — Masterclasses + Booking** | Gated video, enrollments/entitlements, `/book` + Calendar, newsletter | Revenue features | 2–3 wks |
 | **5 — Polish & launch** | A11y/perf pass, analytics, content freeze, DNS cutover, monitoring | Production launch | 1 wk |

@@ -548,6 +548,18 @@ All collections live in the default Firestore database. Field types: `str` = str
 
 ---
 
+### 3.15 `pages` (visual page builder)
+
+Marketing pages edited via the Wix/Duda-style block editor are stored here as
+serialized **Puck** content trees, with `draftData` and `publishedData` kept
+separate, plus nav metadata (`slug`, `isHomepage`, `showInNav`, `navOrder`) and a
+`pages/{pageId}/revisions/{revisionId}` subcollection for version history / rollback.
+**Full schema, security rules, render route, and editor workflow are specified in
+`docs/06-visual-editor-cms.md`.** Published pages are public-read; writes are
+restricted to `editor` / `admin`.
+
+---
+
 ## 4. Security Rules
 
 ### Posture

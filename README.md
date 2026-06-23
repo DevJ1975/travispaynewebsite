@@ -17,6 +17,7 @@ design refresh, a real blog, a store, gated masterclasses, and booking.
 | [`docs/03-uiux-design-system.md`](docs/03-uiux-design-system.md) | Brand, design tokens, motion, wireframes (UI/UX agent) |
 | [`docs/04-backend-google-cloud.md`](docs/04-backend-google-cloud.md) | Firebase/GCP, data models, store, blog, auth, cost (Back-End agent) |
 | [`docs/05-plan-review-and-decisions.md`](docs/05-plan-review-and-decisions.md) | **Lead reconciliation** — cross-doc conflicts resolved, canonical decisions (authoritative) |
+| [`docs/06-visual-editor-cms.md`](docs/06-visual-editor-cms.md) | **Wix/Duda-style visual page builder** — block-based editor (Puck), `pages` model, publish workflow |
 
 ## 🤖 Specialist agents (`.claude/agents/`)
 Reusable Claude Code subagents created for this project:
