@@ -15,7 +15,12 @@ live in `.claude/agents/` so they can be re-invoked throughout the build):
 | 🛠️ Back-End Engineer | `.claude/agents/backend-engineer.md` | Firebase/GCP, data models, store, blog, auth | `04-backend-google-cloud.md` |
 
 Read order: **01** (what exists) → **03** (how it should look) → **04** (the data &
-services) → **02** (how it's built) → back here for the **roadmap**.
+services) → **02** (how it's built) → **05** (lead review — conflicts resolved &
+canonical decisions, **authoritative** where docs disagree) → back here for the **roadmap**.
+
+> **`docs/05-plan-review-and-decisions.md`** is the orchestration layer over the three
+> specialist docs: it reconciles the seams between them (token names, collection names,
+> email provider, API surface, deploy model) and records the canonical decisions.
 
 ---
 

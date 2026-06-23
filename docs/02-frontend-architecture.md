@@ -76,10 +76,12 @@ travispaynewebsite/
 │       └── deploy.yml              # Deploy to Firebase App Hosting on merge to main
 ├── .firebase/                      # Firebase CLI state (gitignored except apphosting.yaml)
 ├── docs/                           # Architecture docs (this file lives here)
-│   ├── 01-project-brief.md
+│   ├── 00-overview-and-roadmap.md
+│   ├── 01-site-audit.md
 │   ├── 02-frontend-architecture.md
-│   ├── 03-backend-schema.md        # Owned by Back-End agent
-│   └── 04-design-tokens.md        # Owned by UI/UX agent
+│   ├── 03-uiux-design-system.md    # Owned by UI/UX agent
+│   ├── 04-backend-google-cloud.md  # Owned by Back-End agent
+│   └── 05-plan-review-and-decisions.md  # Lead reconciliation (authoritative)
 ├── public/
 │   ├── favicon.ico
 │   ├── robots.txt
@@ -549,7 +551,7 @@ import { BlogPost } from '@/types/blog';
 
 export async function getBlogPosts(limit = 12): Promise<BlogPost[]> {
   const snap = await adminDb
-    .collection('posts')         // collection name from docs/03-backend-schema.md
+    .collection('blogPosts')     // collection name from docs/04-backend-google-cloud.md
     .where('status', '==', 'published')
     .orderBy('publishedAt', 'desc')
     .limit(limit)
@@ -1202,6 +1204,6 @@ DNS cutover occurs at end of Phase 1 (approximately week 5–6).
 
 ---
 
-*Seams with other agents:*
-- **UI/UX Agent** supplies `docs/04-design-tokens.md` and `src/styles/tokens.css` — frontend consumes these directly via CSS custom properties + `tailwind.config.ts`.
-- **Back-End Agent** supplies `docs/03-backend-schema.md` with Firestore collection names, document shapes, and security rules — frontend query functions in `src/lib/queries/` are typed against those schemas.
+*Seams with other agents (see `docs/05-plan-review-and-decisions.md` for the authoritative reconciliation):*
+- **UI/UX Agent** supplies `docs/03-uiux-design-system.md` — design tokens are defined as CSS custom properties in `src/styles/globals.css` and mapped in `tailwind.config.ts` using the canonical `tp-*` names (see `05` §3.2).
+- **Back-End Agent** supplies `docs/04-backend-google-cloud.md` with Firestore collection names (e.g. `blogPosts`), document shapes, and security rules — frontend query functions in `src/lib/queries/` are typed against those schemas.
