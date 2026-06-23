@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { CartCount } from '@/components/store/CartCount';
 import { NAV_LINKS } from '@/lib/site';
 import { cn } from '@/lib/utils/cn';
 
@@ -49,6 +50,13 @@ export function SiteNav() {
         </ul>
 
         <div className="flex items-center gap-4">
+          <Link
+            href="/cart"
+            className="hidden items-center text-[13px] uppercase tracking-[0.06em] text-tp-gray transition-colors hover:text-tp-gold sm:inline-flex"
+          >
+            Cart
+            <CartCount />
+          </Link>
           <Link
             href="/book"
             className="hidden rounded-tp-md border border-tp-gold px-4 py-2 text-[13px] uppercase tracking-[0.06em] text-tp-gold transition-colors hover:bg-tp-gold hover:text-tp-black sm:inline-block"

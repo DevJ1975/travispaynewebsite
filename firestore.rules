@@ -28,6 +28,22 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    match /products/{productId} {
+      allow read: if resource.data.status == 'active' || isEditorOrAdmin();
+      allow write: if isAdmin();
+
+      match /variants/{variantId} {
+        allow read: if true;
+        allow write: if isAdmin();
+      }
+    }
+
+    match /orders/{orderId} {
+      // Reads for staff; writes happen server-side via the Admin SDK (Stripe webhook).
+      allow read: if isEditorOrAdmin();
+      allow write: if false;
+    }
+
     // Default deny. Server-side reads/writes use the Admin SDK and are unaffected.
     match /{document=**} {
       allow read, write: if false;

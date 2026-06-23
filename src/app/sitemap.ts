@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { PRODUCTIONS } from '@/content/productions';
 import { getPublishedPosts } from '@/lib/queries/blog';
+import { getActiveProducts } from '@/lib/queries/store';
 import { SITE } from '@/lib/site';
 
 export const revalidate = 3600;
@@ -38,5 +39,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: post.updatedAt ? new Date(post.updatedAt) : now,
   }));
 
-  return [...staticEntries, ...productionEntries, ...postEntries];
+  const products = await getActiveProducts();
+  const productEntries = products.map((product) => ({
+    url: `${SITE.url}/store/${product.slug}`,
+    lastModified: now,
+  }));
+
+  return [...staticEntries, ...productionEntries, ...productEntries, ...postEntries];
 }

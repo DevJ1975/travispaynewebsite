@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Cormorant_Garamond, DM_Mono, DM_Sans } from 'next/font/google';
 import { SiteNav } from '@/components/layout/SiteNav';
 import { SiteFooter } from '@/components/layout/SiteFooter';
+import { CartHydrator } from '@/components/store/CartHydrator';
 import { SITE } from '@/lib/site';
 import './globals.css';
 
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body className="min-h-screen bg-tp-black font-body text-tp-white">
+        <CartHydrator />
         <SiteNav />
         <main>{children}</main>
         <SiteFooter />

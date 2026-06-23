@@ -18,6 +18,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <Link href="/admin/blog" className="text-sm text-tp-gray hover:text-tp-gold">
               Blog
             </Link>
+            <Link href="/admin/orders" className="text-sm text-tp-gray hover:text-tp-gold">
+              Orders
+            </Link>
           </div>
           {user ? (
             <form action={signOutAction} className="flex items-center gap-4">
