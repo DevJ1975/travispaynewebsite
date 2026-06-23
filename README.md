@@ -4,11 +4,12 @@ Rebuild of **travispayne.com** (currently on Duda) as a modern **React / Next.js
 site backed by a **Google (Firebase / Google Cloud)** backend — with a cinematic
 design refresh, a real blog, a store, gated masterclasses, and booking.
 
-> **Status:** **Feature-complete (Phases 0–4 + 2.5).** Every planned phase is built and
+> **Status:** **Complete (Phases 0–5).** Every planned phase is built and polished, and
 > the full verification gate (lint · typecheck · test · build) is green: marketing site,
 > blog + `/admin` CMS, store (Stripe Checkout / Google Pay), masterclasses (gated Mux
-> video, enrollments), and the Wix/Duda-style **visual page builder** (Puck). Remaining
-> work is infra wiring + real content/assets. The **plan** lives in `docs/`.
+> video, enrollments), the Wix/Duda-style **visual page builder** (Puck), and Phase 5
+> polish (count-up stats, hero reel, page transitions, scroll progress, a11y, branded 404).
+> Remaining work is infra wiring + real content/assets. The **plan** lives in `docs/`.
 
 ## 📋 The plan (`docs/`)
 | Doc | Contents |
