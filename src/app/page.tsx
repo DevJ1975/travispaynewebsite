@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Eyebrow, Section, SectionHeading } from '@/components/ui/Section';
 import { Reveal, Stagger, StaggerItem } from '@/components/ui/Reveal';
-import { HeroReel } from '@/components/marketing/HeroReel';
+import { ThreeBackground } from '@/components/marketing/ThreeBackground';
 import { LogoMarquee } from '@/components/marketing/LogoMarquee';
 import { StatsBar } from '@/components/marketing/StatsBar';
 import { ProductionCard } from '@/components/cards/ProductionCard';
@@ -28,7 +28,7 @@ export default function HomePage() {
     <>
       {/* HERO — placeholder shell; the looping video reel lands as a Phase-1 polish (doc 03 §7.2). */}
       <section className="relative flex min-h-[92vh] flex-col justify-end overflow-hidden px-6 pb-24 pt-32 md:px-16">
-        <HeroReel />
+        <ThreeBackground />
         <div className="mx-auto w-full max-w-site">
           <p className="text-overline uppercase text-tp-gold">
             Choreographer &middot; Director &middot; Producer
