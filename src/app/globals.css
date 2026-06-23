@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens: the single source of truth for hex values (doc 03 §2). ── */
+:root {
+  --tp-black: #0a0a0a;
+  --tp-surface: #111111;
+  --tp-elevated: #1a1a1a;
+  --tp-subtle: #222222;
+  --tp-gold: #c8a96e;
+  --tp-gold-lt: #e0c898;
+  --tp-gold-dk: #9e8050;
+  --tp-jade: #2dd4bf;
+  --tp-jade-dk: #1a9e8e;
+  --tp-white: #f5f1eb;
+  --tp-gray: #a09890;
+  --tp-muted: #5c5650;
+  --tp-border: #2a2a2a;
+  --tp-error: #f87171;
+  --tp-success: #34d399;
+}
+
+@layer base {
+  body {
+    @apply bg-tp-black font-body text-tp-white antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+  }
+
+  /* Jade focus ring, keyboard-only (doc 03 §9). */
+  :focus-visible {
+    outline: 2px solid var(--tp-jade);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+/* Pause the legacy marquee for reduced-motion users (doc 03 §5). */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation-play-state: paused;
+  }
+}

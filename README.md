@@ -4,9 +4,10 @@ Rebuild of **travispayne.com** (currently on Duda) as a modern **React / Next.js
 site backed by a **Google (Firebase / Google Cloud)** backend — with a cinematic
 design refresh, a real blog, a store, gated masterclasses, and booking.
 
-> **Status:** Planning. This repo currently contains the rebuild **plan** produced
-> by three specialist agents. No application code has been scaffolded yet — Phase 0
-> begins after the plan is approved.
+> **Status:** **Phase 0 (Foundations) — in progress.** The Next.js 15 app skeleton
+> is scaffolded and the full verification gate (lint · typecheck · test · build) is
+> green. The rebuild **plan** lives in `docs/`. See the Phase 0 checklist in
+> [`docs/05`](docs/05-plan-review-and-decisions.md) §6 for what is done vs. pending.
 
 ## 📋 The plan (`docs/`)
 | Doc | Contents |
@@ -27,11 +28,44 @@ Reusable Claude Code subagents created for this project:
 
 Invoke one with, e.g., *"Use the web-developer agent to scaffold Phase 0."*
 
-## 🛠️ Intended stack
-**Front end:** Next.js 15 (App Router) · TypeScript · Tailwind CSS · Framer Motion
+## 🛠️ Stack
+**Front end:** Next.js 15 (App Router, React 19) · TypeScript (strict) · Tailwind v3.4 · Framer Motion
 **Backend:** Firebase Auth · Cloud Firestore · Cloud Storage · Cloud Functions ·
 Firebase App Hosting · GA4 — with **Stripe + Google Pay** for payments.
 
+## 🚀 Local development
+```bash
+npm install            # install dependencies
+cp .env.example .env.local   # then fill in your Firebase project values
+npm run dev            # start the dev server at http://localhost:3000
+```
+Other scripts:
+```bash
+npm run lint           # ESLint (next/core-web-vitals)
+npm run typecheck      # tsc --noEmit (strict)
+npm run test           # Vitest unit tests
+npm run build          # production build
+npm run format         # Prettier
+```
+CI runs lint → typecheck → test → build on every PR (`.github/workflows/ci.yml`).
+
+### Project layout (Phase 0)
+```
+src/
+  app/            # App Router — root layout, home page, globals.css (design tokens)
+  components/
+    layout/       # SiteNav, SiteFooter
+    ui/           # Button atom
+  lib/
+    firebase/     # client + admin SDK singletons
+    utils/        # cn() class merge helper
+  middleware.ts   # legacy 301 redirects + /admin auth guard
+tailwind.config.ts # tp-* tokens, type scale, fonts via CSS vars
+apphosting.yaml    # Firebase App Hosting + Secret Manager wiring
+firebase.json      # Firestore/Storage rules + emulators
+```
+
 ## Next step
-Review `docs/00-overview-and-roadmap.md`, confirm the open decisions, then begin
-**Phase 0 — Foundations**.
+Continue with **Phase 1 — Marketing pages** (About, Productions, Team, Partners,
+Contact/Book) per `docs/00-overview-and-roadmap.md`, or stand up the three Firebase
+projects to enable App Hosting preview deploys (the remaining Phase 0 infra items).

@@ -1,0 +1,12 @@
+rules_version = '2';
+
+// Phase 0 placeholder: locked by default. Real Storage rules (public-read media,
+// authenticated uploads to scoped paths) are defined alongside the backend phases
+// — see docs/04-backend-google-cloud.md.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

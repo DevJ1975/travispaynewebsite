@@ -154,13 +154,13 @@ Tokens and the Firebase singletons are the two upstream dependencies almost
 everything else needs — do them first in Phase 0.
 
 ## 6. Phase 0 — Definition of Done
-- [ ] Next.js 15 + TS strict + Tailwind v3.4 app boots; `@tailwindcss/typography` on
-- [ ] `globals.css` token vars + merged `tailwind.config.ts` (C2) committed
-- [ ] `firebase/admin.ts` + `firebase/client.ts` singletons; `.env.example` matches §3 + `04` seams
-- [ ] `middleware.ts`: legacy 301s (C5 targets) + `/admin` guard
-- [ ] Header/Footer/root layout render with tokens; fonts via `next/font`
-- [ ] CI (lint+type+test+build) green on PR; App Hosting preview deploy works
-- [ ] Three Firebase projects created; Secret Manager wired in `apphosting.yaml`
+- [x] Next.js 15 + TS strict + Tailwind v3.4 app boots; `@tailwindcss/typography` on
+- [x] `globals.css` token vars + merged `tailwind.config.ts` (C2) committed
+- [x] `firebase/admin.ts` + `firebase/client.ts` singletons; `.env.example` matches §3 + `04` seams
+- [x] `middleware.ts`: legacy 301s (C5 targets) + `/admin` guard
+- [x] Header/Footer/root layout render with tokens; fonts via `next/font`
+- [x] CI (lint+type+test+build) workflow committed (`.github/workflows/ci.yml`); _App Hosting preview deploy pending live Firebase projects_
+- [ ] Three Firebase projects created; Secret Manager wired in `apphosting.yaml` — _`apphosting.yaml` wired; project creation needs an account with GCP access (owner action)_
 
 ---
 
