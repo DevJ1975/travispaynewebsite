@@ -61,6 +61,22 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /pages/{pageId} {
+      allow read: if resource.data.status == 'published' || isEditorOrAdmin();
+      allow create, update: if isEditorOrAdmin();
+      allow delete: if isAdmin();
+
+      match /revisions/{revisionId} {
+        allow read, create: if isEditorOrAdmin();
+        allow update, delete: if false; // append-only snapshots
+      }
+    }
+
+    match /siteSettings/{docId} {
+      allow read: if true; // nav/site config is public
+      allow write: if isEditorOrAdmin();
+    }
+
     // Default deny. Server-side reads/writes use the Admin SDK and are unaffected.
     match /{document=**} {
       allow read, write: if false;
