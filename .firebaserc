@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "travispayne-dev",
+    "dev": "travispayne-dev",
+    "staging": "travispayne-staging",
+    "prod": "travispayne-prod"
+  }
+}

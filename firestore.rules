@@ -1,0 +1,95 @@
+rules_version = '2';
+
+// Phase 2 rules. Server access uses the Admin SDK (bypasses rules); these protect
+// any client-side access. blogPosts: public read of published, editor/admin writes,
+// admin-only delete (doc 04 §4). All other collections remain locked by default
+// until their phases land.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function hasClaim(claim) {
+      return isSignedIn() && request.auth.token[claim] == true;
+    }
+    function isEditorOrAdmin() {
+      return hasClaim('admin') || hasClaim('editor');
+    }
+    function isAdmin() {
+      return hasClaim('admin');
+    }
+    function isPublished(data) {
+      return data.status == 'published';
+    }
+
+    match /blogPosts/{postId} {
+      allow read: if isPublished(resource.data) || isEditorOrAdmin();
+      allow create, update: if isEditorOrAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /products/{productId} {
+      allow read: if resource.data.status == 'active' || isEditorOrAdmin();
+      allow write: if isAdmin();
+
+      match /variants/{variantId} {
+        allow read: if true;
+        allow write: if isAdmin();
+      }
+    }
+
+    match /orders/{orderId} {
+      // Reads for staff; writes happen server-side via the Admin SDK (Stripe webhook).
+      allow read: if isEditorOrAdmin();
+      allow write: if false;
+    }
+
+    match /masterclasses/{classId} {
+      allow read: if resource.data.status == 'published' || isEditorOrAdmin();
+      allow write: if isAdmin();
+
+      match /lessons/{lessonId} {
+        // Gated playback tokens are issued server-side; lesson metadata stays staff-only.
+        allow read: if isEditorOrAdmin();
+        allow write: if isAdmin();
+      }
+    }
+
+    match /enrollments/{enrollmentId} {
+      allow read: if isSignedIn() && (resource.data.uid == request.auth.uid || isEditorOrAdmin());
+      // Server-only: free-enroll action and the Stripe webhook write via the Admin SDK.
+      allow write: if false;
+    }
+
+    match /pages/{pageId} {
+      allow read: if resource.data.status == 'published' || isEditorOrAdmin();
+      allow create, update: if isEditorOrAdmin();
+      allow delete: if isAdmin();
+
+      match /revisions/{revisionId} {
+        allow read, create: if isEditorOrAdmin();
+        allow update, delete: if false; // append-only snapshots
+      }
+    }
+
+    match /siteSettings/{docId} {
+      allow read: if true; // nav/site config is public
+      allow write: if isEditorOrAdmin();
+    }
+
+    // Freeform builder (/studio). Drafts are owner-only; published pages are public-read
+    // and served (SSR) via the Firestore REST API.
+    match /studioPages/{id} {
+      allow read, write: if isSignedIn();
+    }
+    match /publishedPages/{slug} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
+    // Default deny. Server-side reads/writes use the Admin SDK and are unaffected.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

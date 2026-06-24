@@ -1,0 +1,50 @@
+{
+  "name": "travispayne-website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@measured/puck": "^0.20.2",
+    "clsx": "^2.1.1",
+    "firebase": "^11.3.1",
+    "firebase-admin": "^13.1.0",
+    "framer-motion": "^11.18.2",
+    "jose": "^5.10.0",
+    "next": "^15.1.7",
+    "react": "^19.0.0",
+    "react-colorful": "^5.7.0",
+    "react-dom": "^19.0.0",
+    "react-markdown": "^9.1.0",
+    "remark-gfm": "^4.0.1",
+    "stripe": "^17.7.0",
+    "tailwind-merge": "^2.6.0",
+    "three": "^0.184.0",
+    "zod": "^3.24.2",
+    "zundo": "^2.3.0",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/node": "^22.13.4",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@types/three": "^0.184.1",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^15.1.7",
+    "postcss": "^8.5.2",
+    "prettier": "^3.5.1",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.9"
+  }
+}

@@ -1,0 +1,19 @@
+rules_version = '2';
+
+// Studio media library: uploads under studio/** are public-read (so published pages can
+// display them) and writable by any signed-in editor. Everything else stays locked by
+// default — see docs/04-backend-google-cloud.md and docs/09-firebase-deploy.md.
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Freeform builder (/studio) image uploads.
+    match /studio/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Default deny.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
