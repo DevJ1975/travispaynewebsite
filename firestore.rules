@@ -21,6 +21,15 @@ service cloud.firestore {
     function isPublished(data) {
       return data.status == 'published';
     }
+    // Freeform-builder (/studio) editor allowlist — KEEP IN SYNC with editorEmails()
+    // in src/lib/builder/firestore.ts. Accounts are created in the Firebase console;
+    // only these emails may read/write drafts or publish.
+    function isStudioEditor() {
+      return isSignedIn() && request.auth.token.email in [
+        'travis@travispayne.com',
+        'jamil@trainovations.com'
+      ];
+    }
 
     match /blogPosts/{postId} {
       allow read: if isPublished(resource.data) || isEditorOrAdmin();
@@ -77,14 +86,15 @@ service cloud.firestore {
       allow write: if isEditorOrAdmin();
     }
 
-    // Freeform builder (/studio). Drafts are owner-only; published pages are public-read
-    // and served (SSR) via the Firestore REST API.
+    // Freeform builder (/studio). Drafts are editor-only; published pages are public-read
+    // and served (SSR) via the Firestore REST API. The allowlist is enforced here, not just
+    // in the client, so a non-editor account cannot write or publish pages.
     match /studioPages/{id} {
-      allow read, write: if isSignedIn();
+      allow read, write: if isStudioEditor();
     }
     match /publishedPages/{slug} {
       allow read: if true;
-      allow write: if isSignedIn();
+      allow write: if isStudioEditor();
     }
 
     // Default deny. Server-side reads/writes use the Admin SDK and are unaffected.
